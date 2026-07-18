@@ -44,6 +44,8 @@ tracer = trace.get_tracer(__name__)
 
 @dataclass
 class MemoryEntry:
+    """A single stored memory fact with its lookup key and creation timestamp."""
+
     key: str
     value: str
     created_at: float = field(default_factory=time.time)
@@ -57,6 +59,7 @@ class SimpleMemoryStore:
     """
 
     def __init__(self) -> None:
+        """Initialize an empty in-process memory store."""
         self._store: dict[str, MemoryEntry] = {}
 
     def write(self, key: str, value: str) -> None:
@@ -174,6 +177,7 @@ def run_agent_turn(
 # ---------------------------------------------------------------------------
 
 def main() -> None:
+    """Run a three-turn demo showing memory write, memory hit, and cold-start miss."""
     mem = SimpleMemoryStore()
     session_id = str(uuid.uuid4())
 
