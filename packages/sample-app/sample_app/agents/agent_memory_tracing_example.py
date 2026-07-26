@@ -23,7 +23,6 @@ Dependencies (already in sample-app requirements):
 import time
 import uuid
 from dataclasses import dataclass, field
-from typing import Any
 
 from dotenv import load_dotenv
 from opentelemetry import trace
@@ -184,7 +183,7 @@ def run_agent_turn(
 
 
 # ---------------------------------------------------------------------------
-# Demo: two-turn session that demonstrates memory carry-over
+# Demo: three-turn session that demonstrates memory carry-over
 # ---------------------------------------------------------------------------
 
 def main() -> None:
