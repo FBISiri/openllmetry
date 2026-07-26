@@ -27,13 +27,24 @@ from typing import Any
 
 from dotenv import load_dotenv
 from opentelemetry import trace
+from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProcessor
 from traceloop.sdk import Traceloop
 
 load_dotenv()
 
+# Alongside Traceloop's default span pipeline, also export spans to stdout with a
+# ConsoleSpanExporter. This makes the memory.read / memory.write / agent.turn
+# spans visible directly in the terminal for local debugging, without needing to
+# open the Traceloop dashboard. We wrap it in a SimpleSpanProcessor so spans are
+# printed immediately, and combine it with Traceloop's default processor so the
+# normal export behaviour is preserved.
 Traceloop.init(
     app_name="agent-memory-tracing-demo",
     disable_batch=True,  # flush immediately so spans appear right away in dev
+    processor=[
+        Traceloop.get_default_span_processor(disable_batch=True),
+        SimpleSpanProcessor(ConsoleSpanExporter()),
+    ],
 )
 
 tracer = trace.get_tracer(__name__)
